@@ -2,6 +2,8 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -38,7 +40,8 @@ react {
     //
     //   The entry file for bundle generation. Default is 'index.android.js' or 'index.js'
     // entryFile = file("../js/MyApplication.android.js")
-    //
+    // * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
+
     //   A list of extra flags to pass to the 'bundle' commands.
     //   See https://github.com/react-native-community/cli/blob/main/docs/commands.md#bundle
     // extraPackagerArgs = []
