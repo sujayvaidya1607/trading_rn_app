@@ -36,3 +36,46 @@
     transform: rotate(360deg);
   }
 }
+
+.fullscreen-toggle {
+  position: fixed;
+  bottom: 15px;
+  right: 30px;
+  background: white;
+  border: 1px solid black;
+  cursor: pointer;
+  padding: 2px 2px 0px 2px;
+  border-radius: 50%;
+  z-index: 9999;
+}
+.fullscreen-reset {
+  position: fixed;
+  top: 20px;
+  left: 30px;
+  background: white;
+  border: 1px solid black;
+  cursor: pointer;
+  padding: 2px 2px 0px 2px;
+  border-radius: 50%;
+  z-index: 9999;
+
+}
+
+.fullscreen-reset img {
+  width: 21px;
+  height: 21px;
+}
+
+.fullscreen-reset:hover {
+  opacity: 0.8;
+}
+
+
+.fullscreen-toggle img {
+  width: 21px;
+  height: 21px;
+}
+
+.fullscreen-toggle:hover {
+  opacity: 0.8;
+}
