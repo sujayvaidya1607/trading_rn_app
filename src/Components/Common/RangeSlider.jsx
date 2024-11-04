@@ -17,6 +17,7 @@ const RangeSlider = (props) => {
     beforeValueText,
   } = props;
   const { isFullScreen } = useSelector((state) => state.CommonStore);
+ 
 
   return (
     <View
@@ -27,22 +28,30 @@ const RangeSlider = (props) => {
       }}
     >
       <Text style={styles.text}>
-        {`${beforeValueText || ""}` + value &&
-          value + " " + `${afterValueText || ""}`}
+        {`${beforeValueText || ""}` +
+          `${
+            typeof value === "number" && value > 0 && afterValueText === '%' ? value.toFixed(2) : value
+          }` +
+          " " +
+          `${afterValueText || ""}`}
       </Text>
-      <Slider
-        step={step || 0.5}
-        style={[styles.slider]}
-        value={value}
-        onValueChange={setValue}
-        minimumValue={minimumValue || 0}
-        maximumValue={maximumValue || 30}
-        upperLimit={upperLimit || 100}
-        lowerLimit={lowerLimit || 0}
-        tapToSeek
-        minimumTrackTintColor={"#a594d2"}
-        maximumTrackTintColor={"#979EA4"}
-      />
+      {isFullScreen ? (
+        <></>
+      ) : (
+        <Slider
+          step={step || 0.5}
+          style={[styles.slider]}
+          value={value}
+          onValueChange={setValue}
+          minimumValue={minimumValue || 0}
+          maximumValue={maximumValue || 30}
+          upperLimit={upperLimit || 100}
+          lowerLimit={lowerLimit || 0}
+          tapToSeek
+          minimumTrackTintColor={"#a594d2"}
+          maximumTrackTintColor={"#979EA4"}
+        />
+      )}
     </View>
   );
 };

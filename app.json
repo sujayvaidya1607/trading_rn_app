@@ -22,7 +22,8 @@
         {
           "initialOrientation": "DEFAULT"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "android": {
       "adaptiveIcon": {

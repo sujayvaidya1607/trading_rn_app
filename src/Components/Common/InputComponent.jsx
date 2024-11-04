@@ -22,6 +22,7 @@ const InputComponent = props => {
     lowerLimit,
     beforeValueText,
     titleFontSize = 13,
+    showBackground = true
   } = props; //iconName
   //"dollar-sign"
   return (
@@ -42,7 +43,7 @@ const InputComponent = props => {
         shadowRadius: 1,
         paddingVertical: 5,
         paddingHorizontal: 20,
-        backgroundColor: 'rgba(100, 100, 111, 0.2)',
+        backgroundColor:  showBackground ?  'rgba(100, 100, 111, 0.2)' : 'transparent',
       }}>
       <View
         style={{
@@ -55,7 +56,7 @@ const InputComponent = props => {
         }}>
         <Text
           style={{
-            // fontFamily: 'RalewayBold',
+             fontFamily: 'RalewayBold',
             color: '#fefefe',
             fontSize: titleFontSize,
           }}>

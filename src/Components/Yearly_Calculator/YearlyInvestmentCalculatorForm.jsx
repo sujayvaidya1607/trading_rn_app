@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, ScrollView, Alert} from 'react-native';
+import {View, ScrollView, Alert, Platform} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import InputComponent from '../Common/InputComponent';
 import CommonDateTimePicker from '../Common/CommonDateTimePicker';
@@ -11,6 +11,7 @@ import {YearlyInvestmentActions} from '../../Slices/yearlyInvestmentSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import WebViewGraphComponent from '../Common/WebViewGraphComponent';
 import {showYearlyCalculationResult} from './yearlyCalculatorActions';
+import { StatusBar } from 'expo-status-bar';
 const YearlyInvestmentCalculatorForm = () => {
   // const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -182,6 +183,11 @@ const YearlyInvestmentCalculatorForm = () => {
         width: '100%',
         alignItems: 'center',
       }}>
+         <StatusBar
+        style={Platform.OS === "android" ? "light" : "dark"}
+        backgroundColor="#000"
+      />
+
       <View
         style={{
           justifyContent: 'center',
@@ -203,7 +209,7 @@ const YearlyInvestmentCalculatorForm = () => {
           }}>
           <Text
             style={{
-              // fontFamily: 'RalewayBold',
+               fontFamily: 'RalewayBold',
               fontSize: 24,
               marginBottom: 10,
               color: '#fff',
@@ -213,7 +219,7 @@ const YearlyInvestmentCalculatorForm = () => {
         </View>
         <View
           style={{
-            width: '90%',
+            width: '95%',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
