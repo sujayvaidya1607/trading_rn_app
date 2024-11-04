@@ -20,10 +20,10 @@ const CHART_OPTIONS = {
     // precision: 5,
     formatter: (price) => {
       if (price >= 1000000) {
-        return (price / 1000000).toFixed(1) + 'M'; // For millions
-    } else if (price >= 1000) {
-        return (price / 1000).toFixed(1) + 'k'; // For thousands
-    }
+        return (price / 1000000).toFixed(1) + "M"; // For millions
+      } else if (price >= 1000) {
+        return (price / 1000).toFixed(1) + "k"; // For thousands
+      }
       return price.toFixed(1); // For values below 1000, show full number with two decimals
     },
   },
@@ -104,6 +104,8 @@ export const ChartComponent = (props) => {
       }
 
       if (e.data.data.returnsValue) {
+        initialSeries.current.setData([]);
+        finalSeries.current.setData([]);
         setReceivedData((prev) => !prev);
         finalSeries.current = chartRef.current.addLineSeries({
           topColor: "rgba(67, 83, 254, 0.7)",
