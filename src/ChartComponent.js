@@ -1,4 +1,4 @@
-import { createChart, PriceScaleMode } from "lightweight-charts";
+import { createChart, LineStyle, PriceScaleMode } from "lightweight-charts";
 import React, { useEffect, useRef, useState } from "react";
 import FullscreenToggle from "./FullScreenToggle";
 const CHART_OPTIONS = {
@@ -47,16 +47,27 @@ const CHART_OPTIONS = {
   GridOptions: {
     visible: false,
   },
-  // grid: {
-  //   vertLines: {
-  //     color: "rgba(197, 203, 206, 0.4)",
-  //     style: LineStyle.Dotted,
-  //   },
-  //   horzLines: {
-  //     color: "rgba(197, 203, 206, 0.4)",
-  //     style: LineStyle.Dotted,
-  //   },
-  // },
+  gridLineOptions: {
+    visible: false,
+  },
+//   grid: {
+//     vertLines: {
+//         visible: false, // Hide vertical grid lines
+//     },
+//     horzLines: {
+//         visible: false, // Hide horizontal grid lines
+//     },
+// },
+  grid: {
+    vertLines: {
+      color: "rgba(197, 203, 206, 0.2)",
+      style: LineStyle.Dotted,
+    },
+    horzLines: {
+      color: "rgba(197, 203, 206, 0.2)",
+      style: LineStyle.Dotted,
+    },
+  },
 };
 const CHART_OPTIONS_WITHOUT_TIME = {
   timeScale: {
