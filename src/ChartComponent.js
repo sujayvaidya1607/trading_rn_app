@@ -14,17 +14,21 @@ const CHART_OPTIONS = {
     mode: PriceScaleMode.Normal,
     borderColor: "rgba(197, 203, 206, 0.4)",
   },
-  priceFormat: {
-    type: "custom",
-    // minMove: 0.1,
-    // precision: 5,
-    formatter: (price) => {
-      if (price >= 1000000) {
-        return (price / 1000000).toFixed(1) + "M"; // For millions
-      } else if (price >= 1000) {
-        return (price / 1000).toFixed(1) + "k"; // For thousands
+  // priceFormat: {
+  //   type: "custom",
+  //   formatter: (price) => {
+  //     if (price >= 1000) {
+  //       return (price / 1000).toFixed(1) + "k";
+  //     }
+  //     return price.toFixed(2);
+  //   },
+  // },
+  localization: {
+    priceFormatter: (price) => {
+      if (price >= 1000) {
+        return (price / 1000).toFixed(1) + "k";
       }
-      return price.toFixed(1); // For values below 1000, show full number with two decimals
+      return price.toFixed(2);
     },
   },
 
@@ -38,7 +42,7 @@ const CHART_OPTIONS = {
   },
   horzScaleOptions: {
     minBarSpacing: 0.00001,
-    barSpacing: 1,
+    barSpacing: 0,
   },
   GridOptions: {
     visible: false,
@@ -72,8 +76,7 @@ export const ChartComponent = (props) => {
   const chartContainerRef = useRef(null);
   const initialSeries = useRef(null);
   const finalSeries = useRef(null);
-  const [receivedData, setReceivedData] = useState(false);
-
+  // const [receivedData, setReceivedData] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const toggleFullscreen = () => {
@@ -86,27 +89,49 @@ export const ChartComponent = (props) => {
   };
 
   useEffect(() => {
-    setReceivedData((prev) => !prev);
     chartRef.current = createChart(chartContainerRef.current, CHART_OPTIONS);
-    chartRef.current.timeScale().fitContent();
+    chartRef?.current?.applyOptions({
+      timeScale: {
+        fixLeftEdge: true,
+        fixRightEdge: true,
+      },
+    });
+    chartRef?.current?.timeScale().fitContent();
     chartRef?.current?.applyOptions({
       width: 380,
       height: 250,
     });
+
     document.addEventListener("webview-graphData", (e) => {
+      // alert(
+      //   "1init" +
+      //     JSON.stringify(initialSeries.current + finalSeries.current) +
+      //     "***return***"
+      // );
+      if (initialSeries.current) {
+        initialSeries.current = null;
+        // initialSeries.current.setData([]);
+      }
+      if (finalSeries.current) {
+        finalSeries.current = null;
+        // finalSeries.current.setData([]);
+      }
+      // alert(
+      //   "2init" +
+      //     JSON.stringify(initialSeries.current + finalSeries.current) +
+      //     "***return***"
+      // );
       if (e.data.data.showNumbersOnXAxis) {
         chartRef.current.applyOptions(CHART_OPTIONS_WITHOUT_TIME);
-      } else {
-        //   chartRef.current.timeScale().setVisibleRange({
-        //     from: (new Date(Date.UTC(2000, 0, 1, 0, 0, 0, 0))).getTime() / 1000,
-        //     to: (new Date(Date.UTC(2024, 1, 1, 0, 0, 0, 0))).getTime() / 1000,
-        // });
       }
 
+      //  else {
+      //   //   chartRef.current.timeScale().setVisibleRange({
+      //   //     from: (new Date(Date.UTC(2000, 0, 1, 0, 0, 0, 0))).getTime() / 1000,
+      //   //     to: (new Date(Date.UTC(2024, 1, 1, 0, 0, 0, 0))).getTime() / 1000,
+      //   // });
+      // }
       if (e.data.data.returnsValue) {
-        initialSeries.current.setData([]);
-        finalSeries.current.setData([]);
-        setReceivedData((prev) => !prev);
         finalSeries.current = chartRef.current.addLineSeries({
           topColor: "rgba(67, 83, 254, 0.7)",
           bottomColor: "rgba(67, 83, 254, 0.8)",
@@ -117,7 +142,6 @@ export const ChartComponent = (props) => {
       }
       //returnsValue
       if (e.data.data.actualValue) {
-        setReceivedData((prev) => !prev);
         initialSeries.current = chartRef.current.addLineSeries({
           topColor: "rgba(255, 192, 0, 0.7)",
           bottomColor: "rgba(255, 192, 0, 0.3)",
@@ -126,10 +150,14 @@ export const ChartComponent = (props) => {
         });
         initialSeries.current.setData(e.data.data.actualValue);
       }
+      chartRef?.current?.timeScale().fitContent();
+      // alert(
+      //   "3init" +
+      //     JSON.stringify(initialSeries.current + finalSeries.current) +
+      //     "***return***"
+      // );
     });
     return () => {
-      setReceivedData((prev) => !prev);
-
       chartRef.current.remove();
       document.removeEventListener("webview-graphData", () => {
         finalSeries.current &&
@@ -138,7 +166,7 @@ export const ChartComponent = (props) => {
           chartRef.current.removeSeries(initialSeries.current);
       });
     };
-  }, [receivedData]);
+  }, []);
   useEffect(() => {
     document.addEventListener("webview-hwData", (e) => {
       let hValue = e?.data?.data?.height;
