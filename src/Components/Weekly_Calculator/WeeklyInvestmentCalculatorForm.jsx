@@ -5,7 +5,7 @@ import {
   ScrollView,
   View,
   StatusBar as RNStatusBar,
-  Platform
+  Platform,
 } from "react-native";
 import { Button, Text } from "react-native-paper";
 import InputComponent from "../Common/InputComponent";
@@ -15,7 +15,6 @@ import { WeeklyInvestmentActions } from "../../Slices/weeklyInvestmentSlice";
 import WebViewGraphComponent from "../Common/WebViewGraphComponent";
 import { showWeeklyCalculationResult } from "./weeklyCalculatorActions";
 import { StatusBar } from "expo-status-bar";
-
 
 const WeeklyInvestmentCalculatorForm = () => {
   const dispatch = useDispatch();
@@ -159,7 +158,6 @@ const WeeklyInvestmentCalculatorForm = () => {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            marginRight: 20,
           }}
         >
           <Text
@@ -182,7 +180,7 @@ const WeeklyInvestmentCalculatorForm = () => {
             alignItems: "center",
             flexWrap: "wrap",
             gap: 10,
-            paddingTop: 20,
+            paddingTop: 0,
           }}
         >
           <InputComponent
@@ -198,33 +196,35 @@ const WeeklyInvestmentCalculatorForm = () => {
             placeholder={"Enter amount ($)"}
             inputMode={"numeric"}
           />
+          <View  style={{flexDirection : 'row', gap : 10}} >
+            <InputComponent
+              title="Weekly Contribution"
+              iconName="dollar-sign"
+              value={sipCalculationFields.weekly_contribution}
+              onChangeText={(text) => {
+                setSipCalculationFields((prev) => ({
+                  ...prev,
+                  weekly_contribution: text,
+                }));
+              }}
+              placeholder="Enter amount ($)"
+              inputMode="numeric"
+            />
+            <InputComponent
+              title="Weekly increase in contribution"
+              iconName="dollar-sign"
+              value={sipCalculationFields.inc_in_weekly_cont}
+              onChangeText={(text) => {
+                setSipCalculationFields((prev) => ({
+                  ...prev,
+                  inc_in_weekly_cont: text,
+                }));
+              }}
+              inputMode="numeric"
+              placeholder="Enter amount ($)"
+            />
+          </View>
 
-          <InputComponent
-            title="Weekly Contribution"
-            iconName="dollar-sign"
-            value={sipCalculationFields.weekly_contribution}
-            onChangeText={(text) => {
-              setSipCalculationFields((prev) => ({
-                ...prev,
-                weekly_contribution: text,
-              }));
-            }}
-            placeholder="Enter amount ($)"
-            inputMode="numeric"
-          />
-          <InputComponent
-            title="Weekly increase in contribution"
-            iconName="dollar-sign"
-            value={sipCalculationFields.inc_in_weekly_cont}
-            onChangeText={(text) => {
-              setSipCalculationFields((prev) => ({
-                ...prev,
-                inc_in_weekly_cont: text,
-              }));
-            }}
-            inputMode="numeric"
-            placeholder="Enter amount ($)"
-          />
           <InputComponent
             title="Interest Rate"
             iconName="chart-line"

@@ -75,7 +75,7 @@ const WebViewGraphComponent = ({graphRef, onLoad}) => {
     <WebView
       ref={graphRef}
       source={{
-        uri: 'https://4d06-2409-40c2-1043-5878-4333-8347-b834-3342.ngrok-free.app',
+        uri: 'https://safe-slug-equipped.ngrok-free.app',
       }}
       // style={{flex: 2, marginTop: 0}}
       style={[styles.webView, isFullScreen ? styles.fullScreen : {}]}
