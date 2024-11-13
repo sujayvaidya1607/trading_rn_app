@@ -1,6 +1,12 @@
 import React from "react";
 import enterFullscreenIcon from "./Assets/Full screen.svg";
 import exitFullscreenIcon from "./Assets/Fullscreen exit.svg";
+
+/**
+ * Button component for toggling full screen
+ * @param {*} props -isFullscreen, toggleFullscreen
+ * @returns 
+ */ 
 const FullscreenToggle = ({ isFullscreen, toggleFullscreen }) => {
   return (
     <button

@@ -1,6 +1,8 @@
 import { createChart, LineStyle, PriceScaleMode } from "lightweight-charts";
 import React, { useEffect, useRef, useState } from "react";
 import FullscreenToggle from "./FullScreenToggle";
+
+// initialisation Charts properties
 const CHART_OPTIONS = {
   //  width: 360,
   //  height: 250,
@@ -69,6 +71,7 @@ const CHART_OPTIONS = {
     },
   },
 };
+//chart properties for weekly scale
 const CHART_OPTIONS_WITHOUT_TIME = {
   timeScale: {
     borderColor: "rgba(197, 203, 206, 0.4)",
@@ -82,6 +85,11 @@ const CHART_OPTIONS_WITHOUT_TIME = {
     },
   },
 };
+/**
+ * 
+ * Component which shows the charts , values are received from webview 
+ * 
+ */
 export const ChartComponent = (props) => {
   const chartRef = useRef(null);
   const chartContainerRef = useRef(null);
@@ -90,6 +98,9 @@ export const ChartComponent = (props) => {
   // const [receivedData, setReceivedData] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  /**
+   * function which sends data to app of screen state changed status
+   */
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
 
@@ -98,7 +109,7 @@ export const ChartComponent = (props) => {
       window.ReactNativeWebView.postMessage("TOGGLE_FULLSCREEN");
     }
   };
-
+  // this effect listens to values that are being injected by app , and creates chart from it
   useEffect(() => {
     chartRef.current = createChart(chartContainerRef.current, CHART_OPTIONS);
     chartRef?.current?.applyOptions({
@@ -178,6 +189,7 @@ export const ChartComponent = (props) => {
       });
     };
   }, []);
+  //this effect listens to values for fullscreen state
   useEffect(() => {
     document.addEventListener("webview-hwData", (e) => {
       let hValue = e?.data?.data?.height;
