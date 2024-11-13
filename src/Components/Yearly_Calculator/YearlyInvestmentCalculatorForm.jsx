@@ -12,6 +12,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import WebViewGraphComponent from '../Common/WebViewGraphComponent';
 import {showYearlyCalculationResult} from './yearlyCalculatorActions';
 import { StatusBar } from 'expo-status-bar';
+import { API_URI } from '../../../constants/api_base_path';
+import { sendGraphDataToWebview } from '../Common/CommonActions';
+
+
+
+/**
+ * 
+ *COMPONENT/PAGE WHICH SHOWS HISTORICAL STOCK DATA RESULTS
+ */
 const YearlyInvestmentCalculatorForm = () => {
   // const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -20,16 +29,7 @@ const YearlyInvestmentCalculatorForm = () => {
   );
   const {isFullScreen} = useSelector(state => state.CommonStore);
   const graphRef = React.useRef();
-  const sendGraphDataToWebview = graphValues => {
-    return `(function() {
-        document.dispatchEvent(new MessageEvent('webview-graphData', {
-          data:  ${JSON.stringify({
-            type: 'graph-data',
-            data: graphValues,
-          })}
-        })) 
-      })()`;
-  };
+
   const [sipCalculationFields, setSipCalculationFields] = React.useState({
     stock_name: 'nvda',
     start_date: '',
@@ -51,6 +51,7 @@ const YearlyInvestmentCalculatorForm = () => {
   const [calculationLoader, setCalculationLoader] = React.useState(false);
   const [trigger, setTrigger] = React.useState(false);
 
+  //function which sets the date , start and end date
   const onChange = (event, selectedDate, field) => {
     setShowDatePickers({
       startDate: false,
@@ -78,16 +79,18 @@ const YearlyInvestmentCalculatorForm = () => {
       }
     }
   };
-
+//function which calls the api to get graph values
   const getCalculationResults = async () => {
+    //if not all fields are filled, throw error as alert.
     if (Object.values(sipCalculationFields).some(v => !v.length)) {
       Alert.alert('Error', 'Please fill in all required fields.');
     } else {
       console.log('sipCalculationFields', sipCalculationFields);
       setCalculationLoader(true);
+      //api call
       try {
         const request = await fetch(
-          `https://whole-logically-polecat.ngrok-free.app/api/account/analyse-account/?stock_name=${
+          `${API_URI}/account/analyse-account/?stock_name=${
             sipCalculationFields.stock_name
           }&inc_in_yearly_invest=${parseInt(
             increaseInYearlyInvestment,
@@ -111,7 +114,8 @@ const YearlyInvestmentCalculatorForm = () => {
             YearlyInvestmentActions.setYearlyCalculationFormFields({
               ...sipCalculationFields,
             }),
-          );
+          ); 
+          //after saving the data ,  call the redux middleware function which processes data and sends to function 
           dispatch(
             showYearlyCalculationResult(
               graphRef,
@@ -140,6 +144,7 @@ const YearlyInvestmentCalculatorForm = () => {
     }
   }, [yearlyCalculationResults]);
 
+  // when results are already taken from api and reloading or re rendering happens, this effect will make sure to render the latest or last result present. 
   React.useEffect(() => {
     if (
       yearlyCalculationResults?.date_wise_data &&
@@ -168,7 +173,7 @@ const YearlyInvestmentCalculatorForm = () => {
       );
     }
   }, [yearlyCalculationResults]);
-  React.useEffect(() => {}, [trigger]);
+  React.useEffect(() => {}, [trigger]); // when trigger is updated , this will re render the screen for latest values
   console.log('trigger', trigger);
 
   //https://whole-logically-polecat.ngrok-free.app/api/account/analyse-account/?stock_name=nvda&start_date=2015-01-01&end_date=2016-01-01&inc_in_yearly_invest=365&daily_investment=100

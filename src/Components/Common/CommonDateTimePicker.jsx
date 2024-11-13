@@ -1,5 +1,16 @@
 import React from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
+/**
+ * Common Date time picker Component
+ * @param {*} props - value,
+    onChange,
+    placeholderText,
+    mode,
+    minimumDate,
+    maximumDate,
+    display
+ * @returns Date Time Picker
+ */
 const CommonDateTimePicker = props => {
   const {
     value,

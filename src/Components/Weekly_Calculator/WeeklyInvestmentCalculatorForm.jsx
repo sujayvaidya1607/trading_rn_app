@@ -15,7 +15,14 @@ import { WeeklyInvestmentActions } from "../../Slices/weeklyInvestmentSlice";
 import WebViewGraphComponent from "../Common/WebViewGraphComponent";
 import { showWeeklyCalculationResult } from "./weeklyCalculatorActions";
 import { StatusBar } from "expo-status-bar";
+import { API_URI } from "../../../constants/api_base_path";
+import { sendGraphDataToWebview } from "../Common/CommonActions";
 
+
+/**
+ * 
+ *COMPONENT/PAGE WHICH SHOWS INVESTMENT RESULTS
+ */
 const WeeklyInvestmentCalculatorForm = () => {
   const dispatch = useDispatch();
   const { weeklyCalculationResults } = useSelector(
@@ -31,7 +38,10 @@ const WeeklyInvestmentCalculatorForm = () => {
   const [interestRate, setInterestRate] = React.useState(0);
   const [totalYears, setTotalYears] = React.useState(0);
   const [calculationLoader, setCalculationLoader] = React.useState(false);
+
+  //function which calls the api to get graph values
   const getCalculationResults = async () => {
+      //if not all fields are filled, throw error as alert.
     if (Object.values(sipCalculationFields).some((v) => !v.length)) {
       Alert.alert("Error", "Please fill in all required fields.");
     } else if ([interestRate, totalYears].some((v) => v.length <= 0)) {
@@ -47,11 +57,12 @@ const WeeklyInvestmentCalculatorForm = () => {
         interestRate,
         totalYears
       );
+       //api call
       try {
         dispatch(WeeklyInvestmentActions.setWeeklyInvestmentResult({}));
         dispatch(WeeklyInvestmentActions.setWeeklyCalculationFormFields({}));
         const request = await fetch(
-          `https://whole-logically-polecat.ngrok-free.app/api/account/track-account/?start_principal=${parseInt(
+          `${API_URI}/account/track-account/?start_principal=${parseInt(
             sipCalculationFields.start_principal,
             10
           )}&weekly_contribution=${parseInt(
@@ -104,16 +115,8 @@ const WeeklyInvestmentCalculatorForm = () => {
     }
   };
   const graphRef = React.useRef();
-  const sendGraphDataToWebview = (graphValues) => {
-    return `(function() {
-        document.dispatchEvent(new MessageEvent('webview-graphData', {
-          data:  ${JSON.stringify({
-            type: "graph-data",
-            data: graphValues,
-          })}
-        })) 
-      })()`;
-  };
+  
+  //set the status bar style upon loading the page 
   React.useEffect(() => {
     if (Platform.OS === "android") {
       RNStatusBar.setBarStyle("light-content");

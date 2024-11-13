@@ -1,5 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+/**
+ * Common result card component
+ * @param {*} props title, value, shouldShowUSD
+ */
 const CalculatorResultParameterCard = props => {
   const {title, value, shouldShowUSD = true} = props;
   return (

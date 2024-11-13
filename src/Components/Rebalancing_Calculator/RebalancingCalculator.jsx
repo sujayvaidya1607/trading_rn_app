@@ -1,3 +1,10 @@
+
+
+/**
+ * THIS COMPONENT IS ONLY FOR THE UI DEMONSTRATION OF REBALANCING CALCULATOR, FUNCTIONS ARE NOT USED FOR ANY PURPOSES
+ */
+
+
 /* eslint-disable react-native/no-inline-styles */
 import React from "react";
 import { View, ScrollView, Alert, Platform } from "react-native";
@@ -74,7 +81,7 @@ const RebalancingCalculator = () => {
       setCalculationLoader(true);
       try {
         const request = await fetch(
-          `https://whole-logically-polecat.ngrok-free.app/api/account/analyse-account/?stock_name=${
+          `${API_URI}/account/analyse-account/?stock_name=${
             sipCalculationFields.stock_name
           }&inc_in_yearly_invest=${parseInt(
             sipCalculationFields.inc_in_yearly_invest,

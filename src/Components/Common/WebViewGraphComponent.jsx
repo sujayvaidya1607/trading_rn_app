@@ -3,34 +3,41 @@ import {Dimensions, Platform, StyleSheet} from 'react-native';
 import WebView from 'react-native-webview';
 // import Orientation from 'react-native-orientation-locker';
 import {useDispatch, useSelector} from 'react-redux';
-import {setIsFullScreen} from './CommonActions';
+import {sendGraphDataToWebview, setIsFullScreen} from './CommonActions';
 import {useNavigation} from '@react-navigation/native';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { WEBVIEW_URI } from '../../../constants/webview_path';
 
+/**
+ * Common Graph webview component
+ * @param {*} props
+ * 
+ * graphRef - ref which will hold webview 
+ * 
+ * onLoad - function which will run upon webview loading
+ * 
+ */
 const WebViewGraphComponent = ({graphRef, onLoad}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {isFullScreen} = useSelector(state => state.CommonStore);
+  /**
+   * Hides the tab bar when rotated to landscape mode
+   */
   const hideTabBar = () => {
     navigation.setOptions({
       tabBarStyle: {display: 'none'},
     });
   };
+  /**
+   * shows tab bar when rotated to portrait mode 
+   */
   const showTabBar = () => {
     navigation.setOptions({
       tabBarStyle: {display: 'flex'},
     });
   };
-  const sendGraphDataToWebview = values => {
-    return `(function() {
-        document.dispatchEvent(new MessageEvent('webview-hwData', {
-          data:  ${JSON.stringify({
-            type: 'hw-data',
-            data: values,
-          })}
-        })) 
-      })()`;
-  };
+
   const handleMessage = event => {
     const message = event.nativeEvent.data;
 
@@ -40,6 +47,7 @@ const WebViewGraphComponent = ({graphRef, onLoad}) => {
 
         dispatch(setIsFullScreen(false));
         // Orientation?.lockToPortrait();
+           //handle screen orientation
         if(Platform.OS === 'ios' ){
           ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT);
         } else {
@@ -58,7 +66,7 @@ const WebViewGraphComponent = ({graphRef, onLoad}) => {
         dispatch(setIsFullScreen(true));
         showTabBar();
         // Orientation?.lockToLandscape();
-        
+        //handle screen orientation
         ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
         setTimeout(() => {
           graphRef.current.injectJavaScript(
@@ -75,7 +83,7 @@ const WebViewGraphComponent = ({graphRef, onLoad}) => {
     <WebView
       ref={graphRef}
       source={{
-        uri: 'https://safe-slug-equipped.ngrok-free.app',
+        uri: WEBVIEW_URI,
       }}
       // style={{flex: 2, marginTop: 0}}
       style={[styles.webView, isFullScreen ? styles.fullScreen : {}]}

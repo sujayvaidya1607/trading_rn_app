@@ -5,6 +5,27 @@ import {Text, TextInput} from 'react-native-paper';
 import RangeSlider from './RangeSlider';
 // import Icon from 'react-native-vector-icons/FontAwesome5';
 
+
+/**
+ *  Common input component for slider and text input
+ * @param {*} props title,
+    value,
+    onChangeText,
+    placeholder,
+    inputMode,
+    shouldShowSlider = false,
+    setValue,
+    afterValueText = '',
+    steps = 1,
+    minimumValue,
+    maximumValue,
+    upperLimit,
+    lowerLimit,
+    beforeValueText,
+    titleFontSize = 13,
+    showBackground 
+ * 
+ */
 const InputComponent = props => {
   const {
     title,

@@ -1,0 +1,1 @@
+export const API_URI = "https://whole-logically-polecat.ngrok-free.app/api" //or the locally run project link

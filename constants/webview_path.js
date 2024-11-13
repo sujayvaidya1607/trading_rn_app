@@ -1,0 +1,1 @@
+export const WEBVIEW_URI = "https://safe-slug-equipped.ngrok-free.app" //or the locally run react js webapp project link

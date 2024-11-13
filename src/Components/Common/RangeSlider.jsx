@@ -4,6 +4,19 @@ import React from "react";
 import Slider from "@react-native-community/slider";
 import { useSelector } from "react-redux";
 
+/**
+ * Common Slider component
+ * @param {*} props -  value,
+    setValue,
+    afterValueText,
+    step,
+    minimumValue,
+    maximumValue,
+    upperLimit,
+    lowerLimit,
+    beforeValueText,
+ *  
+ */
 const RangeSlider = (props) => {
   const {
     value,
@@ -17,7 +30,6 @@ const RangeSlider = (props) => {
     beforeValueText,
   } = props;
   const { isFullScreen } = useSelector((state) => state.CommonStore);
- 
 
   return (
     <View
@@ -30,7 +42,9 @@ const RangeSlider = (props) => {
       <Text style={styles.text}>
         {`${beforeValueText || ""}` +
           `${
-            typeof value === "number" && value > 0 && afterValueText === '%' ? value.toFixed(2) : value
+            typeof value === "number" && value > 0 && afterValueText === "%"
+              ? value.toFixed(2)
+              : value
           }` +
           " " +
           `${afterValueText || ""}`}
