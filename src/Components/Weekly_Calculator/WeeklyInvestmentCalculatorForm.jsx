@@ -16,7 +16,7 @@ import WebViewGraphComponent from "../Common/WebViewGraphComponent";
 import { showWeeklyCalculationResult } from "./weeklyCalculatorActions";
 import { StatusBar } from "expo-status-bar";
 import { API_URI } from "../../../constants/api_base_path";
-import { sendGraphDataToWebview } from "../Common/CommonActions";
+// import { sendGraphDataToWebview } from "../Common/CommonActions";
 
 
 /**
@@ -38,7 +38,16 @@ const WeeklyInvestmentCalculatorForm = () => {
   const [interestRate, setInterestRate] = React.useState(0);
   const [totalYears, setTotalYears] = React.useState(0);
   const [calculationLoader, setCalculationLoader] = React.useState(false);
-
+  const sendGraphDataToWebview = (graphValues) => {
+    return `(function() {
+        document.dispatchEvent(new MessageEvent('webview-graphData', {
+          data:  ${JSON.stringify({
+            type: "graph-data",
+            data: graphValues,
+          })}
+        })) 
+      })()`;
+  };
   //function which calls the api to get graph values
   const getCalculationResults = async () => {
       //if not all fields are filled, throw error as alert.
